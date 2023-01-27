@@ -1,95 +1,127 @@
-import telegram
 import sqlite3
+from telegram.ext import Updater, CommandHandler
 
-bot = telebot.TeleBot("5436395817:AAFngaB7h9MsHc1fA8et4sFOWVEPJ04WkOI")
+def start(update, context):
+    update.message.reply_text("Welcome to Anonymous Chat Bot! Please use the /gender command to choose your gender and /uni command to choose your university.")
 
-# Connect to the database
-conn = sqlite3.connect("database.db")
-c = conn.cursor()
-
-# Create tables for the database if they don't already exist
-c.execute('''CREATE TABLE IF NOT EXISTS users (
-                chat_id INTEGER PRIMARY KEY,
-                gender TEXT,
-                partner_gender TEXT,
-                uni TEXT,
-                partner_uni TEXT)''')
-
-# Handle the /start command
-@bot.message_handler(commands=["start"])
-def start(message):
-    bot.reply_to(message, "Welcome to the anonymous chat bot! Type /help to see a list of available commands.")
-
-# Handle the /gender command
-@bot.message_handler(commands=["gender"])
-def gender(message):
-    c.execute("INSERT INTO users (chat_id) VALUES (?)", (message.chat.id,))
-    bot.reply_to(message, "Please choose your gender: /male, /female, or /others")
-
-# Handle the /partnergender command
-@bot.message_handler(commands=["partnergender"])
-def partner_gender(message):
-    c.execute("UPDATE users SET partner_gender = ? WHERE chat_id = ?", (message.text, message.chat.id))
-    bot.reply_to(message, "Please choose the gender of your desired partner: /male, /female, or /others")
-
-# Handle the /uni command
-@bot.message_handler(commands=["uni"])
-def uni(message):
-    c.execute("UPDATE users SET uni = ? WHERE chat_id = ?", (message.text, message.chat.id))
-    bot.reply_to(message, "Please choose your university: /unpad, or /non-unpad")
-
-# Handle the /partneruni command
-@bot.message_handler(commands=["partneruni"])
-def partner_uni(message):
-    c.execute("UPDATE users SET partner_uni = ? WHERE chat_id = ?", (message.text, message.chat.id))
-    bot.reply_to(message, "Please choose the university of your desired partner: /unpad, or /non-unpad")
-
-# Handle the /report command
-@bot.message_handler(commands=["report"])
-def report(message):
-    # Code to handle reporting here
-    bot.reply_to(message, "Thank you for your report. It has been submitted for review.")
-
-# Handle the /stop command
-@bot.message_handler(commands=["stop"])
-def stop(message):
-    # Code to handle stopping the current chat here
-    bot.reply_to(message, "You have stopped the current chat.")
-
-# Handle the /profile command
-@bot.message_handler(commands=["profile"])
-def profile(message):
-    # Code to handle updating profile information here
-    bot.reply_to(message, "Your profile information has been updated.")
-
-
-# Handle the /contact command
-@bot.message_handler(commands=["contact"])
-def contact(message):
-    bot.reply_to(message, "If you need to contact an administrator, please send an email to admin@example.com")
-
-# Handle the /search command
-@bot.message_handler(commands=["search"])
-def search(message):
-    # Code to search for partners based on user preferences and connect them
-    bot.reply_to(message, "Searching for partners...")
-    # Connect users whose preferences match
-    c.execute("SELECT chat_id FROM users WHERE gender = (SELECT partner_gender FROM users WHERE chat_id = ?) AND uni = (SELECT partner_uni FROM users WHERE chat_id = ?)", (message.chat.id, message.chat.id))
-    match = c.fetchone()
-    if match:
-        bot.send_message(match[0], "You have been connected with a new partner. Say hi!")
-        bot.send_message(message.chat.id, "You have been connected with a new partner. Say hi!")
+def gender(update, context):
+    user_id = update.message.from_user.id
+    user_gender = context.args[0]
+    conn = sqlite3.connect('users.db')
+    c = conn.cursor()
+    c.execute("SELECT * FROM users WHERE user_id = ?", (user_id,))
+    result = c.fetchone()
+    if result:
+        c.execute("UPDATE users SET gender = ? WHERE user_id = ?", (user_gender, user_id))
     else:
-        bot.reply_to(message, "No match found.")
+        c.execute("INSERT INTO users (user_id, gender) VALUES (?, ?)", (user_id, user_gender))
+    conn.commit()
+    conn.close()
+    update.message.reply_text("Your gender has been set to " + user_gender + ". Please use the /uni command to choose your university.")
 
-# Handle all other messages
-@bot.message_handler(func=lambda message: True)
-def handle_all(message):
-    bot.reply_to(message, "Sorry, I didn't understand that. Type /help to see a list of available commands.")
+def uni(update, context):
+    user_id = update.message.from_user.id
+    user_uni = context.args[0]
+    conn = sqlite3.connect('users.db')
+    c = conn.cursor()
+    c.execute("UPDATE users SET uni = ? WHERE user_id = ?", (user_uni, user_id))
+    conn.commit()
+    conn.close()
+    update.message.reply_text("Your university has been set to " + user_uni + ". You can now use the /partnergender and /partneruni commands to choose your preferred gender and university for a partner.")
 
-# Commit changes to the database and close the connection
-conn.commit()
-conn.close()
+def partnergender(update, context):
+    user_id = update.message.from_user.id
+    partner_gender = context.args[0]
+    conn = sqlite3.connect('users.db')
+    c = conn.cursor()
+    c.execute("UPDATE users SET partnergender = ? WHERE user_id = ?", (partner_gender, user_id))
+    conn.commit()
+    conn.close()
+    update.message.reply_text("Your partner gender preference has been set to " + partner_gender + ". You can now use the /partneruni command to choose your preferred university for a partner.")
 
-# Start the bot
-bot.polling()
+def partneruni(update, context):
+    user_id = update.message.from_user.id
+    partner_uni = context.args[0]
+    conn = sqlite3.connect('users.db')
+    c = conn.cursor()
+    c.execute("UPDATE users SET partneruni = ? WHERE user_id = ?", (partner_uni, user_id))
+    conn.commit()
+    conn.close()
+    update.message.reply_text("Your partner university preference has been set to " + partner_uni + ". You can now use the /start command to begin searching for a partner.")
+
+def report(update, context):
+    user_id = update.message.from_user.id
+    report_text = context.args[0]
+    conn = sqlite3.    connect('users.db')
+    c = conn.cursor()
+    c.execute("INSERT INTO reports (user_id, report_text) VALUES (?, ?)", (user_id, report_text))
+    conn.commit()
+    conn.close()
+    update.message.reply_text("Thank you for your report. Our team will look into it.")
+
+def stop(update, context):
+    user_id = update.message.from_user.id
+    conn = sqlite3.connect('users.db')
+    c = conn.cursor()
+    c.execute("DELETE FROM chats WHERE user_id = ?", (user_id,))
+    conn.commit()
+    conn.close()
+    update.message.reply_text("Your current chat has been stopped.")
+
+def profile(update, context):
+    user_id = update.message.from_user.id
+    conn = sqlite3.connect('users.db')
+    c = conn.cursor()
+    c.execute("SELECT * FROM users WHERE user_id = ?", (user_id,))
+    result = c.fetchone()
+    if result:
+        update.message.reply_text("Your current profile settings: \nGender: " + result[1] + "\nUniversity: " + result[2] + "\nPartner Gender Preference: " + result[3] + "\nPartner University Preference: " + result[4])
+    else:
+        update.message.reply_text("You have not set up your profile yet. Please use the /gender and /uni commands to set up your profile.")
+
+def contact(update, context):
+    update.message.reply_text("If you need to contact the administrator, please email us at admin@anonymouschatbot.com.")
+
+def connect(update, context):
+    user_id = update.message.from_user.id
+    conn = sqlite3.connect('users.db')
+    c = conn.cursor()
+    c.execute("SELECT * FROM users WHERE user_id = ?", (user_id,))
+    result = c.fetchone()
+    if result:
+        gender = result[1]
+        uni = result[2]
+        partnergender = result[3]
+        partneruni = result[4]
+        c.execute("SELECT user_id FROM users WHERE gender = ? AND uni = ? AND partnergender = ? AND partneruni = ?", (gender, uni, partnergender, partneruni))
+        partner = c.fetchone()
+        if partner:
+            c.execute("INSERT INTO chats (user_id, partner_id) VALUES (?, ?)", (user_id, partner[0]))
+            conn.commit()
+            update.message.reply_text("You have been connected with a partner. You can start chatting now.")
+        else:
+            update.message.reply_text("Sorry, we could not find a matching partner for you at this time. Please try again later.")
+    else:
+        update.message.reply_text("You have not set up your profile yet. Please use the /gender and /uni commands to set up your profile.")
+    conn.close()
+
+def main():
+    updater = Updater("5436395817:AAFngaB7h9MsHc1fA8et4sFOWVEPJ04WkOI", use_context=True)
+    dp = updater.dispatcher
+
+    dp.add_handler(CommandHandler("start", start))
+    dp.add_handler(CommandHandler("gender", gender))
+    dp.add_handler(CommandHandler("uni", uni))
+    dp.add_handler(CommandHandler("partnergender", partnergender))
+    dp.add_handler(CommandHandler("partneruni", partneruni))
+    dp.add_handler(CommandHandler("report", report))
+    dp.add_handler(CommandHandler("stop", stop))
+    dp.add_handler(CommandHandler("profile", profile))
+    dp.add_handler(CommandHandler("connect", connect))
+    dp.add_handler(CommandHandler("contact", contact))
+
+    updater.start_polling()
+    updater.idle()
+
+if __name__ == '__main__':
+    main()
