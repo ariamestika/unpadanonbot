@@ -1,7 +1,7 @@
 import pyTelegramBotAPI as telebot
 import sqlite3
 
-bot = telebot.TeleBot("YOUR_TOKEN_HERE")
+bot = telebot.TeleBot("5436395817:AAFngaB7h9MsHc1fA8et4sFOWVEPJ04WkOI")
 
 # Connect to the database
 conn = sqlite3.connect("database.db")
