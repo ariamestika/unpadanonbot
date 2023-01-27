@@ -1,4 +1,4 @@
-import pyTelegramBotAPI as telebot
+import telegram
 import sqlite3
 
 bot = telebot.TeleBot("5436395817:AAFngaB7h9MsHc1fA8et4sFOWVEPJ04WkOI")
