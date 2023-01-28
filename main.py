@@ -2,7 +2,7 @@ import telebot
 from telebot import types
 import sqlite3
 
-bot = telebot.TeleBot("TOKEN")
+bot = telebot.TeleBot("5436395817:AAFngaB7h9MsHc1fA8et4sFOWVEPJ04WkOI")
 
 # Create users.db if it doesn't exist
 conn = sqlite3.connect('users.db')
