@@ -1,19 +1,15 @@
 import sqlite3
 
-def create_users_db():
-    conn = sqlite3.connect('users.db')
-    c = conn.cursor()
+# Connect to or create the users.db file
+conn = sqlite3.connect('users.db')
 
-    # create table to store user information
-    c.execute('''CREATE TABLE users
-                 (id INTEGER PRIMARY KEY, gender text, uni text, partnergender text, partneruni text)''')
+# Create a cursor
+c = conn.cursor()
 
-    # create table to store user's chat history
-    c.execute('''CREATE TABLE chats
-                 (id INTEGER PRIMARY KEY, user1 INTEGER, user2 INTEGER, FOREIGN KEY (user1) REFERENCES users(id), FOREIGN KEY (user2) REFERENCES users(id))''')
+# Create the users table
+c.execute('''CREATE TABLE users
+             (id INTEGER PRIMARY KEY, gender TEXT, partner_gender TEXT, uni TEXT, partner_uni TEXT)''')
 
-    conn.commit()
-    conn.close()
-
-if __name__ == '__main__':
-    create_users_db()
+# Commit the changes and close the connection
+conn.commit()
+conn.close()

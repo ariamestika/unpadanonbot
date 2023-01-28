@@ -1,7 +1,10 @@
+
+App.json:
+```json
 {
   "name": "Anonymous Chat Telegram Bot",
-  "description": "A Telegram bot for anonymous chat with various searching options",
-  "repository": "https://github.com/ariamestika/unpadanonbot",
+  "description": "A Telegram bot for anonymous chat with search and connection options.",
+  "repository": "https://github.com/user/repo",
   "keywords": ["telegram", "bot", "anonymous", "chat"],
   "scripts": {
     "start": "python main.py"
