@@ -1,1 +1,1 @@
-telebot
+web: python main.py
