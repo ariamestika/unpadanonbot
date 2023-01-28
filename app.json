@@ -1,12 +1,32 @@
-
-App.json:
-```json
 {
   "name": "Anonymous Chat Telegram Bot",
-  "description": "A Telegram bot for anonymous chat with search and connection options.",
-  "repository": "https://github.com/user/repo",
-  "keywords": ["telegram", "bot", "anonymous", "chat"],
+  "description": "A Telegram bot that allows users to search and connect with partners based on gender and university preferences.",
+  "repository": "https://github.com/yourusername/your-bot-repo",
+  "keywords": ["telegram", "bot", "chat", "anonymous"],
   "scripts": {
     "start": "python main.py"
-  }
+  },
+  "env": {
+    "BOT_TOKEN": {
+      "description": "The Telegram bot token",
+      "required": true
+    },
+    "DATABASE_URL": {
+      "description": "The URL of the database for storing user preferences",
+      "required": true
+    }
+  },
+  "formation": {
+    "worker": {
+      "quantity": 1
+    }
+  },
+  "addons": [
+    "heroku-postgresql"
+  ],
+  "buildpacks": [
+    {
+        "url": "https://github.com/heroku/heroku-buildpack-python"
+    }
+  ],
 }

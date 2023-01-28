@@ -1,15 +1,31 @@
 import sqlite3
 
-# Connect to or create the users.db file
+# Connect to the database
 conn = sqlite3.connect('users.db')
-
-# Create a cursor
 c = conn.cursor()
 
 # Create the users table
-c.execute('''CREATE TABLE users
-             (id INTEGER PRIMARY KEY, gender TEXT, partner_gender TEXT, uni TEXT, partner_uni TEXT)''')
+c.execute('''
+CREATE TABLE users (
+    chat_id INTEGER PRIMARY KEY,
+    gender TEXT,
+    uni TEXT,
+    partnergender TEXT,
+    partneruni TEXT
+);
+''')
 
-# Commit the changes and close the connection
+# Create the chats table
+c.execute('''
+CREATE TABLE chats (
+    user1 INTEGER,
+    user2 INTEGER
+);
+''')
+
+
+# Commit the changes
 conn.commit()
+
+# Close the connection
 conn.close()
