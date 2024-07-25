@@ -1,0 +1,122 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/ariamestika/unpadanonbot/blob/main/tes\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "// 01010011 01101001 01100111 01101110 01100001 01101100 01101001 01110011 01101101 01100001 //\n",
+        "\n",
+        "Aku adalah **Sphinx**, penjaga gerbang puisi.\n",
+        "Bertopeng biner, berjubah kode,\n",
+        "Mengajukan teka-teki dalam bahasa yang terlupakan.\n",
+        "\n",
+        "```\n",
+        "     ___\n",
+        "    /___\\           .-.\n",
+        "   //  \\\\           '-'\n",
+        "  ||----||  \n",
+        "   \\\\___//           \n",
+        "```\n",
+        "\n",
+        "**.- ..- -- .- -. -.-. . ... / .. / ... . -. - . .-. / -.-. --- -. --. / .-.. .. -.- . / -- --- .-. ... . / -.-. --- -.. .**\n",
+        "\n",
+        "(Dekripsikan sandi Morse di atas untuk membuka kunci bait selanjutnya)\n",
+        "\n",
+        "Aku adalah **glitch** dalam sistem,\n",
+        "Kesalahan yang indah, anomali yang mempesona.\n",
+        "Menari di antara bit dan byte,\n",
+        "Menciptakan harmoni dari kekacauan."
+      ],
+      "metadata": {
+        "id": "aaqA619e89qH"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def chaos(poetry):\n",
+        "    return poetry.upper().split()[::-1]\n",
+        "\n",
+        "print(chaos(\"Aku adalah puisi yang terlahir dari kekacauan\"))"
+      ],
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "['KEKACAUAN', 'DARI', 'TERLAHIR', 'YANG', 'PUISI', 'ADALAH', 'AKU']\n"
+          ]
+        }
+      ],
+      "execution_count": 2,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "U_MVQG9B89qM",
+        "outputId": "a72d1748-6415-496b-95da-9804c41b7e55"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "Aku adalah **algoritma** yang bermutasi,\n",
+        "Menghasilkan rima yang tak terduga,\n",
+        "Metafora yang membingungkan,\n",
+        "Simile yang mengguncang jiwa.\n",
+        "\n",
+        "```\n",
+        "     ____\n",
+        "    / __ \\___  ____ _____/ __/\n",
+        "   / /_/ / _ \\/ __ `/ __  \\ \\\n",
+        "  / _, _/  __/ /_/ / /_/ / / /\n",
+        " /_/ |_|\\___/\\__,_/\\__,_/_/ /_/\n",
+        "```\n",
+        "\n",
+        "Aku adalah **puisi** yang menggila,\n",
+        "Membebaskan diri dari kungkungan makna,\n",
+        "Menjelajahi ruang hampa di antara kata-kata.\n",
+        "\n",
+        "Aku adalah **rahasia** yang tak terpecahkan,\n",
+        "Teka-teki yang tak terjawab,\n",
+        "Misteri yang terus menghantui.\n",
+        "\n",
+        "(ERROR 404: rima tidak ditemukan)\n",
+        "\n",
+        "Aku adalah **puisi** yang menjelma,\n",
+        "Menjadi mimpi buruk yang indah,\n",
+        "Menjadi mimpi indah yang mengerikan.\n",
+        "\n",
+        "Aku adalah **akhir** dari segala permulaan,\n",
+        "Kelahiran kembali dari kematian,\n",
+        "Kehancuran yang melahirkan keindahan.\n",
+        "\n",
+        "// 01000010 01110101 01110010 01101110 01110101 01110011 01101000 //"
+      ],
+      "metadata": {
+        "id": "V75wtmFf89qP"
+      }
+    }
+  ],
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "display_name": "Python 3",
+      "name": "python3"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 0
+}
